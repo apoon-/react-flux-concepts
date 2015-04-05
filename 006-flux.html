@@ -37,6 +37,10 @@
             _recipes.push(text);
         }
 
+        function deleteRecipe(){
+          _recipes = [];
+        }
+
         var RecipeStore = Flux.createStore({
             getRecipes: function(){
                return _recipes;
@@ -45,6 +49,9 @@
             if(payload.actionType === "ADD_RECIPE") {
                 addRecipe(payload.text);
                 RecipeStore.emitChange();
+            } else if (payload.actionType === "DELETE_RECIPE") {
+              deleteRecipe();
+              RecipeStore.emitChange();
             }
         });
 
@@ -56,6 +63,11 @@
                   actionType: "ADD_RECIPE",
                   text: text
                }
+            },
+            deleteRecipe: function(){
+              return {
+                actionType: "DELETE_RECIPE"
+              }
             }
         });
 
@@ -72,7 +84,7 @@
             getInitialState: function(){
                 return getRecipes();
             },
-            stateDidChange: function() {
+            storeDidChange: function() {
                 this.setState(getRecipes());
             },
             render: function() {
@@ -86,6 +98,9 @@
             addRecipe: function(){
                 RecipeActions.addRecipe({_id: Math.floor(Math.random()*1000000)});
             },
+            deleteRecipe: function() {
+              RecipeActions.deleteRecipe();
+            },
             render: function() {
                 return (
                 <div className="recipes_app">
@@ -95,6 +110,7 @@
                         })}
                     </ul>
                     <button onClick={this.addRecipe}>Add recipe</button>
+                    <button onClick={this.deleteRecipe}>DELETE ALL RECIPES</button>
                 </div>
                 )
             }
