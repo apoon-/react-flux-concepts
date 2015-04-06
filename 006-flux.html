@@ -52,6 +52,9 @@
             } else if (payload.actionType === "DELETE_RECIPE") {
               deleteRecipe();
               RecipeStore.emitChange();
+            } else if (payload.actionType === "ADD_KITTEN") {
+              addRecipe(payload.text);
+              RecipeStore.emitChange();
             }
         });
 
@@ -63,6 +66,12 @@
                   actionType: "ADD_RECIPE",
                   text: text
                }
+            },
+            addKitten: function(text){
+              return {
+                actionType: "ADD_KITTEN",
+                text: text
+              }
             },
             deleteRecipe: function(){
               return {
@@ -98,6 +107,9 @@
             addRecipe: function(){
                 RecipeActions.addRecipe({_id: Math.floor(Math.random()*1000000)});
             },
+            addKitten: function(){
+              RecipeActions.addKitten({_id: "Kitten " + Math.floor(Math.random()*1000000)});
+            },
             deleteRecipe: function() {
               RecipeActions.deleteRecipe();
             },
@@ -110,6 +122,7 @@
                         })}
                     </ul>
                     <button onClick={this.addRecipe}>Add recipe</button>
+                    <button onClick={this.addKitten}>Add Kitten</button>
                     <button onClick={this.deleteRecipe}>DELETE ALL RECIPES</button>
                 </div>
                 )
